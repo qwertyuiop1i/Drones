@@ -4,67 +4,70 @@ using UnityEngine;
 
 public class drone : MonoBehaviour
 {
-    public float maxPower = 5;
+    public float
+ maxPower = 5;
     public float maxTurnSpeed = 40;
 
     public Rigidbody2D rb;
-
     public Transform target;
+
+    // PID parameters for linear velocity
+    public float kpLinear = 1f;
+    public float kiLinear = 0.1f;
+    public float kdLinear = 0.01f;
+    private float errorLinear, integralLinear, derivativeLinear;
+
+    // PID parameters for angular velocity
+    public float kpAngular = 1f;
+    public float kiAngular = 0.1f;
+    public float kdAngular = 0.01f;
+    private float errorAngular, integralAngular, derivativeAngular;
+
+    private float previousErrorLinear, previousErrorAngular;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        //target= Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
+        //errors
         Vector3 direction = target.position - transform.position;
-
-
         float distance = direction.magnitude;
         float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
         float currentAngle = transform.rotation.eulerAngles.z;
 
-   //     if (targetAngle - currentAngle > 0)
-    //    {
-   //         turnRight(maxTurnSpeed*0.1f);
-    //        Debug.Log("Turning right");
-    //    }
-    //    if (targetAngle - currentAngle < 0)
-     //   {
-    //        turnLeft(maxTurnSpeed*0.1f);
-    //        Debug.Log("Turning left");
-    //    }
+        errorLinear = distance;
+        integralLinear += errorLinear * Time.deltaTime;
+        derivativeLinear = (errorLinear - previousErrorLinear) / Time.deltaTime;
+        previousErrorLinear = errorLinear;
 
+        errorAngular = Mathf.DeltaAngle(currentAngle, targetAngle);
+        integralAngular += errorAngular * Time.deltaTime;
+        derivativeAngular = (errorAngular - previousErrorAngular) / Time.deltaTime;
+        previousErrorAngular = errorAngular;
 
-        if (Input.GetKey(KeyCode.D))
-        {
-            turnRight(maxTurnSpeed);
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            turnLeft(maxTurnSpeed);
+        //outpouts calc
+        float linearOutput = kpLinear * errorLinear + kiLinear * integralLinear + kdLinear * derivativeLinear;
+        float angularOutput = kpAngular * errorAngular + kiAngular * integralAngular + kdAngular * derivativeAngular;
 
-        }
-        if (Input.GetKey(KeyCode.W))
-        {
-            thrusters(maxPower);
-        }
+        // clamp
+        linearOutput = Mathf.Clamp(linearOutput, 0, maxPower);
+        angularOutput = Mathf.Clamp(angularOutput, -maxTurnSpeed, maxTurnSpeed);
 
+        // apply
+        thrusters(linearOutput);
+        turn(angularOutput);
     }
 
-    public void turnRight(float am)
-    {
-        rb.AddTorque(-1 * am);
-    }
-    public void turnLeft(float am)
+    void turn(float am)
     {
         rb.AddTorque(am);
     }
-    public void thrusters(float am)
+
+    void thrusters(float am)
     {
-        rb.AddForce(transform.up * maxPower);
+        rb.AddForce(transform.up * am);
     }
 }
