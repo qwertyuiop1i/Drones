@@ -27,12 +27,14 @@ public class drone : MonoBehaviour
     private float previousErrorLinear, previousErrorAngular;
 
 
-    public float maxedOvershoot = 1000f;
+    public float maxedOvershoot = 0f;
     public bool hasCrossedTarget = false;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        maxedOvershoot = 0f;
     }
 
     void Update()
@@ -67,7 +69,18 @@ public class drone : MonoBehaviour
         thrusters(linearOutput);
         turn(angularOutput);
 
-        if(errorAngular>)
+        if (Mathf.Sign(errorAngular)==-1)
+        {
+            hasCrossedTarget = true;
+        }
+
+        if (hasCrossedTarget)
+        {
+            if (Mathf.Abs(errorAngular) > maxedOvershoot)
+            {
+                maxedOvershoot = Mathf.Abs(errorAngular);
+            }
+        }
         
 
 
