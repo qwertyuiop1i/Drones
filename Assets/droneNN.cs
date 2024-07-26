@@ -12,7 +12,11 @@ public class droneNN : MonoBehaviour
 
     //INPUTS: Angle towards target, Drone Angle, Velocity x, velocity y, angular velocity. Target position. Target Distance. Drone position.
     private float distance;
-
+    private float xDistance;
+    private float yDistance;
+    private float xVelocity;
+    private float yVelocity;
+    private float angularVelocity;
     //OUTPUTS: Thruster Add Force, Adding Torque
     
 
@@ -25,8 +29,31 @@ public class droneNN : MonoBehaviour
     void Update()
     {
         distance = Vector2.Distance(transform.position, target.position);
+        xDistance = Mathf.Abs(transform.position.x - target.position.x);
+        yDistance = Mathf.Abs(transform.position.y - target.position.y);
+        xVelocity = rb.velocity.x;
+        yVelocity = rb.velocity.y;
+        angularVelocity = rb.angularVelocity;
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            thrusters(maxPower);
+        }
         
+        if (Input.GetKey(KeyCode.A))
+        {
+            turn(maxTurnSpeed);
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            turn(-maxTurnSpeed);
+        }
         
+
+        
+
+
+        //interpret(turn, thrust);
     }
 
     public void interpret(float turning, float thrust)
@@ -55,4 +82,6 @@ public class droneNN : MonoBehaviour
     {
         rb.AddForce(transform.up * am);
     }
+
+
 }
