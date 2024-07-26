@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class drone : MonoBehaviour
 {
-    public float
- maxPower = 5;
+    public float scoring;
+
+    public float maxPower = 5;
     public float maxTurnSpeed = 40;
 
     public Rigidbody2D rb;
@@ -70,4 +71,6 @@ public class drone : MonoBehaviour
     {
         rb.AddForce(transform.up * am);
     }
+
+
 }
