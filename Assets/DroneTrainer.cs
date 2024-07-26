@@ -14,7 +14,7 @@ public class DroneTrainer : MonoBehaviour
 
     public GameObject winner;
 
-
+    public float timeScale=1f;
     float ScorePID(float timeToTarget, float overshoot, int oscillations)
     {
         float weightTimeToTarget = 1.0f;
@@ -41,6 +41,7 @@ public class DroneTrainer : MonoBehaviour
 
     void Update()
     {
+        Time.timeScale = timeScale;
         time += Time.deltaTime;
         
         if (time >= waitTime)
@@ -53,7 +54,7 @@ public class DroneTrainer : MonoBehaviour
                     winner = g;
                 }
             }
-
+            Debug.Log("The lowest overshoot is " + winner.GetComponent<drone>().maxedOvershoot);
             foreach (GameObject drone in population)
             {
  
@@ -63,9 +64,10 @@ public class DroneTrainer : MonoBehaviour
 
 
             population.Clear();
-            for (int i = 0; i < droneAmount-1; i++)
+            for (int i = 0; i < droneAmount-2; i++)
             {
                 GameObject ob = Instantiate(winner,new Vector3(0f,0f,0f),Quaternion.Euler(0f,0f,0f));
+                ob.GetComponent<drone>().enabled = true;
                 ob.GetComponent<drone>().kiAngular += Random.Range(-mutationAmount, mutationAmount);
                 ob.GetComponent<drone>().kpAngular += Random.Range(-mutationAmount, mutationAmount);
                 ob.GetComponent<drone>().kdAngular += Random.Range(-mutationAmount, mutationAmount);
@@ -73,6 +75,11 @@ public class DroneTrainer : MonoBehaviour
                 population.Add(ob);
 
             }
+            
+            GameObject bb = Instantiate(winner, new Vector3(0f, 0f, 0f), Quaternion.Euler(0f, 0f, 0f));
+            bb.GetComponent<drone>().enabled = true;
+            population.Add(bb);
+            bb.name = "WINNER";
             winner = population[0];
             time = 0f;
 

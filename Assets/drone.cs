@@ -37,8 +37,12 @@ public class drone : MonoBehaviour
         maxedOvershoot = 0f;
   
         hasCrossedTarget = false;
-        
-}
+
+        kpAngular = Mathf.Clamp(kpAngular, 0f, Mathf.Infinity);
+        kiAngular = Mathf.Clamp(kiAngular, 0f, Mathf.Infinity);
+        kdAngular = Mathf.Clamp(kdAngular, 0f, Mathf.Infinity);
+
+    }
 
     void Update()
     {
