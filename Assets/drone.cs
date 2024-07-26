@@ -20,21 +20,23 @@ public class drone : MonoBehaviour
     {
         //target= Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        Vector2 direction = target.position - (Vector2)transform.position;
+        Vector3 direction = target.position - transform.position;
 
 
         float distance = direction.magnitude;
         float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
         float currentAngle = transform.rotation.eulerAngles.z;
 
-        if (targetAngle - currentAngle > 0)
-        {
-            turnRight(maxTurnSpeed);
-        }
-        if (targetAngle - currentAngle < 0)
-        {
-            turnLeft(maxTurnSpeed);
-        }
+   //     if (targetAngle - currentAngle > 0)
+    //    {
+   //         turnRight(maxTurnSpeed*0.1f);
+    //        Debug.Log("Turning right");
+    //    }
+    //    if (targetAngle - currentAngle < 0)
+     //   {
+    //        turnLeft(maxTurnSpeed*0.1f);
+    //        Debug.Log("Turning left");
+    //    }
 
 
         if (Input.GetKey(KeyCode.D))
