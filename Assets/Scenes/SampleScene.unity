@@ -254,7 +254,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4023e6e592904da4682da3ac8c26f58e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  droneAmount: 0
+  droneAmount: 22
+  drone: {fileID: 1358179471}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,7 +407,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 3
 --- !u!58 &1358179474
 CircleCollider2D:
   m_ObjectHideFlags: 0

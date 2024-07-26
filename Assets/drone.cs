@@ -26,6 +26,10 @@ public class drone : MonoBehaviour
 
     private float previousErrorLinear, previousErrorAngular;
 
+
+    public float maxedOvershoot = 1000f;
+    public bool hasCrossedTarget = false;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -49,6 +53,8 @@ public class drone : MonoBehaviour
         derivativeAngular = (errorAngular - previousErrorAngular) / Time.deltaTime;
         previousErrorAngular = errorAngular;
 
+
+
         //outpouts calc
         float linearOutput = kpLinear * errorLinear + kiLinear * integralLinear + kdLinear * derivativeLinear;
         float angularOutput = kpAngular * errorAngular + kiAngular * integralAngular + kdAngular * derivativeAngular;
@@ -60,6 +66,13 @@ public class drone : MonoBehaviour
         // apply
         thrusters(linearOutput);
         turn(angularOutput);
+
+        if(errorAngular>)
+        
+
+
+
+
     }
 
     void turn(float am)
