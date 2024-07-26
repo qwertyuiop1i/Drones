@@ -14,17 +14,21 @@ public class droneNN : MonoBehaviour
     public Transform target;
 
     //INPUTS: Angle towards target, Drone Angle, Velocity x, velocity y, angular velocity. Target position. Target Distance. Drone position.
-    private float distance;
+    //private float distance;
     private float xDistance;
     private float yDistance;
     private float xVelocity;
     private float yVelocity;
     private float angularVelocity;
+    private float cosAngle;
+    private float sinAngle;
     //OUTPUTS: Thruster Add Force, Adding Torque
 
-    public float[,] inputs = new float[6,1];
-    public float[,] weights = new float[3, 6];
-    public float[,] outputs =new float[2,1];
+    public float[] inputs = new float[7];
+    public float[] weights1 = new float[7];
+    public float[] weights2 = new float[7];
+    public float[] biases = new float[7];
+    public float[] outputs =new float[2];
         /*
          [i1]
          [i2]
@@ -36,20 +40,40 @@ public class droneNN : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        for (int i = 0; i < weights1.Length; i++)
+        {
+            weights1[i] = 1;
+            weights2[i] = 1;
+        }
     }
 
     
     void Update()
         
     {
-        distance = Vector2.Distance(transform.position, target.position);
+        //distance = Vector2.Distance(transform.position, target.position);
         xDistance = Mathf.Abs(transform.position.x - target.position.x);
         yDistance = Mathf.Abs(transform.position.y - target.position.y);
         xVelocity = rb.velocity.x;
         yVelocity = rb.velocity.y;
         angularVelocity = rb.angularVelocity;
+        cosAngle = Mathf.Cos(transform.eulerAngles.z*Mathf.Deg2Rad);
+        sinAngle = Mathf.Sin(transform.eulerAngles.z*Mathf.Deg2Rad);
 
+        inputs[0] = xDistance;
+        inputs[1] = yDistance;
+        inputs[2] = xVelocity;
+        inputs[3] = yVelocity;
+        inputs[4] = angularVelocity;
+        inputs[5] = cosAngle;
+        inputs[6] = sinAngle;
 
+        
+
+        turnParameter =
+
+        powerParameter=
 
 
 
@@ -70,7 +94,7 @@ public class droneNN : MonoBehaviour
         
 
 
-        //interpret(turn, thrust);
+        interpret(turnParameter, powerParameter);
     }
 
     public void interpret(float turning, float thrust)
