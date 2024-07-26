@@ -7,6 +7,9 @@ public class droneNN : MonoBehaviour
     public float maxPower = 5;
     public float maxTurnSpeed = 40;
 
+    private float turnParameter;
+    private float powerParameter;
+
     public Rigidbody2D rb;
     public Transform target;
 
@@ -18,8 +21,18 @@ public class droneNN : MonoBehaviour
     private float yVelocity;
     private float angularVelocity;
     //OUTPUTS: Thruster Add Force, Adding Torque
-    
 
+    public float[,] inputs = new float[6,1];
+    public float[,] weights = new float[3, 6];
+    public float[,] outputs =new float[2,1];
+        /*
+         [i1]
+         [i2]
+         [i3]
+         [i4]
+         [i5]
+         [i6]
+         */
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -27,6 +40,7 @@ public class droneNN : MonoBehaviour
 
     
     void Update()
+        
     {
         distance = Vector2.Distance(transform.position, target.position);
         xDistance = Mathf.Abs(transform.position.x - target.position.x);
@@ -35,11 +49,14 @@ public class droneNN : MonoBehaviour
         yVelocity = rb.velocity.y;
         angularVelocity = rb.angularVelocity;
 
+
+
+
+
         if (Input.GetKey(KeyCode.W))
         {
             thrusters(maxPower);
-        }
-        
+        }      
         if (Input.GetKey(KeyCode.A))
         {
             turn(maxTurnSpeed);
