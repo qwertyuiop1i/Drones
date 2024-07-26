@@ -27,10 +27,10 @@ public class DroneTrainer : MonoBehaviour
     {
         for(int i = 0; i < droneAmount; i++)
         {
-            GameObject ob = Instantiate(drone);
+            GameObject ob = Instantiate(drone, new Vector3(0, 0, 0),Quaternion.identity); ;
             ob.GetComponent<drone>().kiAngular += Random.Range(-mutationAmount, mutationAmount);
             ob.GetComponent<drone>().kpAngular += Random.Range(-mutationAmount, mutationAmount);
-            ob.GetComponent<drone>().kdLinear += Random.Range(-mutationAmount, mutationAmount);
+            ob.GetComponent<drone>().kdAngular += Random.Range(-mutationAmount, mutationAmount);
 
             population.Add(ob);
             
@@ -56,12 +56,27 @@ public class DroneTrainer : MonoBehaviour
 
             foreach (GameObject drone in population)
             {
-                if (drone != winner)
-                {
+ 
                     Destroy(drone);
-                }
+     
             }
-            //time = 0f;
+
+
+            population.Clear();
+            for (int i = 0; i < droneAmount-1; i++)
+            {
+                GameObject ob = Instantiate(winner,new Vector3(0f,0f,0f),Quaternion.Euler(0f,0f,0f));
+                ob.GetComponent<drone>().kiAngular += Random.Range(-mutationAmount, mutationAmount);
+                ob.GetComponent<drone>().kpAngular += Random.Range(-mutationAmount, mutationAmount);
+                ob.GetComponent<drone>().kdAngular += Random.Range(-mutationAmount, mutationAmount);
+
+                population.Add(ob);
+
+            }
+            winner = population[0];
+            time = 0f;
+
+
         }
     }
 

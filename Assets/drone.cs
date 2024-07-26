@@ -35,7 +35,10 @@ public class drone : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         maxedOvershoot = 0f;
-    }
+  
+        hasCrossedTarget = false;
+        
+}
 
     void Update()
     {
