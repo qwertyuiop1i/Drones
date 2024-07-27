@@ -26,7 +26,10 @@ public class droneTrainerNN : MonoBehaviour
             population.Add(ob);
 
         }
-        winner = population[0];
+        if (droneAmount > 0)
+        {
+            winner = population[0];
+        }
     }
 
     // Update is called once per frame

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class droneNN : MonoBehaviour
 {
+    [Header("Should train?")]
+    public bool shouldFly = true;
+
     public float maxPower = 5;
     public float maxTurnSpeed = 40;
     public float mutationAm = 1f;
@@ -25,6 +28,7 @@ public class droneNN : MonoBehaviour
     //OUTPUTS: Thruster Add Force, Adding Torque
 
     public float[] inputs = new float[7];
+    [Header("0 : xDistance, 1 : yDistance, 2 : xVelocity, 3 : yVelocity, 4 : angularVelocity, 5 : cosAngle, 6: sinAngle")]
     public float[] weights1 = new float[7];
     public float[] weights2 = new float[7];
     //public float[] biases1 = new float[7];
@@ -40,6 +44,7 @@ public class droneNN : MonoBehaviour
          */
     void Start()
     {
+        shouldFly = true;
         rb = GetComponent<Rigidbody2D>();
 
         if (gameObject.name != "WINNER")
@@ -62,67 +67,72 @@ public class droneNN : MonoBehaviour
     void Update()
         
     {
-        
 
-        turnParameter = 0f;
-        powerParameter = 0f;
-        //distance = Vector2.Distance(transform.position, target.position);
-        xDistance = Mathf.Abs(transform.position.x - target.position.x);
-        yDistance = Mathf.Abs(transform.position.y - target.position.y);
-        xVelocity = rb.velocity.x;
-        yVelocity = rb.velocity.y;
-        angularVelocity = rb.angularVelocity;
-        cosAngle = Mathf.Cos(transform.eulerAngles.z*Mathf.Deg2Rad);
-        sinAngle = Mathf.Sin(transform.eulerAngles.z*Mathf.Deg2Rad);
-        distance = Mathf.Sqrt(Mathf.Pow(xDistance, 2) + Mathf.Pow(yDistance, 2));
-
-        inputs[0] = xDistance;
-        inputs[1] = yDistance;
-        inputs[2] = xVelocity;
-        inputs[3] = yVelocity;
-        inputs[4] = angularVelocity;
-        inputs[5] = cosAngle;
-        inputs[6] = sinAngle;
-
-
-        for (int i = 0; i < inputs.Length; i++)
+        if (shouldFly)
         {
-            turnParameter += inputs[i] * weights1[i];//biases1[i] + 
+
+            turnParameter = 0f;
+            powerParameter = 0f;
+            //distance = Vector2.Distance(transform.position, target.position);
+            xDistance = (transform.position.x - target.position.x);
+            yDistance = (transform.position.y - target.position.y);
+            xVelocity = rb.velocity.x;
+            yVelocity = rb.velocity.y;
+            angularVelocity = rb.angularVelocity;
+            cosAngle = Mathf.Cos(transform.eulerAngles.z * Mathf.Deg2Rad);
+            sinAngle = Mathf.Sin(transform.eulerAngles.z * Mathf.Deg2Rad);
+            distance = Mathf.Sqrt(Mathf.Pow(xDistance, 2) + Mathf.Pow(yDistance, 2));
+
+            inputs[0] = xDistance;
+            inputs[1] = yDistance;
+            inputs[2] = xVelocity;
+            inputs[3] = yVelocity;
+            inputs[4] = angularVelocity;
+            inputs[5] = cosAngle;
+            inputs[6] = sinAngle;
+
+
+            for (int i = 0; i < inputs.Length; i++)
+            {
+                turnParameter += inputs[i] * weights1[i];//biases1[i] + 
+            }
+            outputs[0] = turnParameter;
+
+            for (int i = 0; i < inputs.Length; i++)
+            {
+                powerParameter += biases2[i] + inputs[i] * weights2[i];
+            }
+            outputs[1] = powerParameter;
+
+
+            if (Input.GetKey(KeyCode.W))
+            {
+                thrusters(maxPower);
+            }
+            if (Input.GetKey(KeyCode.A))
+            {
+                turn(maxTurnSpeed);
+            }
+            else if (Input.GetKey(KeyCode.D))
+            {
+                turn(-maxTurnSpeed);
+            }
+
+
+
+
+
+            interpret(turnParameter, powerParameter);
+
         }
-        outputs[0] = turnParameter;
-
-        for (int i = 0; i < inputs.Length; i++)
-        {
-            powerParameter += biases2[i] + inputs[i] * weights2[i];
-        }
-        outputs[1] = powerParameter;
-
-
-        if (Input.GetKey(KeyCode.W))
-        {
-            thrusters(maxPower);
-        }      
-        if (Input.GetKey(KeyCode.A))
-        {
-            turn(maxTurnSpeed);
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            turn(-maxTurnSpeed);
-        }
-        
-
-        
-
-
-        interpret(turnParameter, powerParameter);
     }
 
     public void interpret(float turning, float thrust)
     {
-        if (Mathf.Round(thrust) == 1)
+        Debug.Log("Interprettting a thrust of " + thrust);
+        if (thrust > 0)
         {
-            Debug.Log("burst"); 
+            Debug.Log(thrust>0); 
             thrusters(maxPower);
         }
         if (turning > 0.2f)
