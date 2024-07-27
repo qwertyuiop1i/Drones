@@ -171,7 +171,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 352123247}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -240,7 +240,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 352123247}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -13.34, y: 0.27, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -261,8 +261,53 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxPower: 5
   maxTurnSpeed: 4
+  powerParameter: 0
   rb: {fileID: 352123248}
   target: {fileID: 1368756286}
+  distance: 0
+  inputs:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  weights1:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  weights2:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  biases1:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  biases2:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  outputs:
+  - 0
+  - 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -394,12 +439,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f8408096976d7740b3924e3b36a605a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  droneAmount: 0
+  droneAmount: 30
   mutationAmount: 0
-  drone: {fileID: 0}
+  drone: {fileID: 352123247}
+  winner: {fileID: 0}
   population: []
-  waitTime: 2.5
-  timeScale: 1
+  waitTime: 1
+  timeScale: 0.5
 --- !u!1 &534198475
 GameObject:
   m_ObjectHideFlags: 0
@@ -647,7 +693,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1368756285}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -2, z: -0.057900116}
+  m_LocalPosition: {x: 1.4, y: 8.2, z: -0.057900116}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
