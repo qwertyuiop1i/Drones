@@ -27,7 +27,8 @@ public class droneNN : MonoBehaviour
     public float[] inputs = new float[7];
     public float[] weights1 = new float[7];
     public float[] weights2 = new float[7];
-    public float[] biases = new float[7];
+    public float[] biases1 = new float[7];
+    public float[] biases2 = new float[7];
     public float[] outputs =new float[2];
         /*
          [i1]
@@ -43,15 +44,20 @@ public class droneNN : MonoBehaviour
 
         for (int i = 0; i < weights1.Length; i++)
         {
-            weights1[i] = 1;
-            weights2[i] = 1;
+            weights1[i] = Random.Range(-1f, 1f);
+            weights2[i] = Random.Range(-1f, 1f);
+            biases1[i] = Random.Range(-1f, 1f);
+            biases2[i] = Random.Range(-1f, 1f);
         }
+        
     }
 
     
     void Update()
         
     {
+        turnParameter = 0f;
+        powerParameter = 0f;
         //distance = Vector2.Distance(transform.position, target.position);
         xDistance = Mathf.Abs(transform.position.x - target.position.x);
         yDistance = Mathf.Abs(transform.position.y - target.position.y);
@@ -69,12 +75,17 @@ public class droneNN : MonoBehaviour
         inputs[5] = cosAngle;
         inputs[6] = sinAngle;
 
-        
 
-        turnParameter =
+        for (int i = 0; i < inputs.Length; i++)
+        {
+            turnParameter += biases1[i] + inputs[i] * weights1[i];
+        }
 
-        powerParameter=
 
+        for (int i = 0; i < inputs.Length; i++)
+        {
+            turnParameter += biases2[i] + inputs[i] * weights2[i];
+        }
 
 
         if (Input.GetKey(KeyCode.W))
@@ -123,6 +134,6 @@ public class droneNN : MonoBehaviour
     {
         rb.AddForce(transform.up * am);
     }
-
-
+    
+    
 }
