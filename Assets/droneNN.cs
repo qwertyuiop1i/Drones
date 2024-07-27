@@ -10,7 +10,7 @@ public class droneNN : MonoBehaviour
     public float maxPower = 5;
     public float maxTurnSpeed = 40;
     public float mutationAm = 1f;
-    private float turnParameter;
+    public float turnParameter;
     public float powerParameter;
 
     public Rigidbody2D rb;
@@ -117,7 +117,13 @@ public class droneNN : MonoBehaviour
             {
                 turn(-maxTurnSpeed);
             }
-
+            if (Input.GetKey(KeyCode.Space))
+            {
+                transform.position = new Vector2(0, 0);
+                transform.rotation = Quaternion.identity;
+                rb.velocity = Vector2.zero;
+                rb.angularVelocity = 0f;
+            }
 
 
 
@@ -129,7 +135,7 @@ public class droneNN : MonoBehaviour
 
     public void interpret(float turning, float thrust)
     {
-        Debug.Log("Interprettting a thrust of " + thrust);
+       // Debug.Log("Interprettting a thrust of " + thrust);
         if (thrust > 0)
         {
             Debug.Log(thrust>0); 
@@ -148,12 +154,12 @@ public class droneNN : MonoBehaviour
 
     void turn(float am)
     {
-        rb.AddTorque(am);
+        rb.AddTorque(am,ForceMode2D.Force);
     }
 
     void thrusters(float am)
     {
-        rb.AddForce(transform.up * am);
+        rb.AddForce(transform.up * am,ForceMode2D.Force);
     }
     
     

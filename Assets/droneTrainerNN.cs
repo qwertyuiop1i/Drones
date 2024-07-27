@@ -32,9 +32,19 @@ public class droneTrainerNN : MonoBehaviour
         }
     }
 
+    public void adjust(float agd)
+    {
+        waitTime = agd;
+    }
+
     // Update is called once per frame
+
+
     void Update()
     {
+
+
+
         if (isTraining)
         {
 
@@ -63,7 +73,7 @@ public class droneTrainerNN : MonoBehaviour
                 for (int i = 0; i < droneAmount - 2; i++)
                 {
                     GameObject ob = Instantiate(winner, new Vector3(0f, 0f, 0f), Quaternion.Euler(0f, 0f, 0f));
-                    ob.GetComponent<droneNN>().mutationAm = 6f;
+                    ob.GetComponent<droneNN>().mutationAm = 0.7f;
                     ob.gameObject.name = "bigChange";
                     ob.GetComponent<droneNN>().enabled = true;
                     population.Add(ob);
@@ -72,7 +82,7 @@ public class droneTrainerNN : MonoBehaviour
                 for (int i = 0; i < 15; i++)
                 {
                     GameObject ob = Instantiate(winner, new Vector3(0f, 0f, 0f), Quaternion.Euler(0f, 0f, 0f));
-                    ob.GetComponent<droneNN>().mutationAm = 2f;
+                    ob.GetComponent<droneNN>().mutationAm = 0.3f;
                     ob.gameObject.name = "mediumChange";
                     ob.GetComponent<droneNN>().enabled = true;
                     population.Add(ob);
@@ -82,7 +92,7 @@ public class droneTrainerNN : MonoBehaviour
                 for (int i = 0; i < 7; i++)
                 {
                     GameObject ob = Instantiate(winner, new Vector3(0f, 0f, 0f), Quaternion.Euler(0f, 0f, 0f));
-                    ob.GetComponent<droneNN>().mutationAm = 1f;
+                    ob.GetComponent<droneNN>().mutationAm = 0.1f;
                     ob.gameObject.name = "smallChange";
                     ob.GetComponent<droneNN>().enabled = true;
                     population.Add(ob);
