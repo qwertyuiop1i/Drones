@@ -6,7 +6,7 @@ public class droneNN : MonoBehaviour
 {
     public float maxPower = 5;
     public float maxTurnSpeed = 40;
-
+    public float mutationAm = 1f;
     private float turnParameter;
     public float powerParameter;
 
@@ -27,7 +27,7 @@ public class droneNN : MonoBehaviour
     public float[] inputs = new float[7];
     public float[] weights1 = new float[7];
     public float[] weights2 = new float[7];
-    public float[] biases1 = new float[7];
+    //public float[] biases1 = new float[7];
     public float[] biases2 = new float[7];
     public float[] outputs =new float[2];
         /*
@@ -46,10 +46,10 @@ public class droneNN : MonoBehaviour
         {
             for (int i = 0; i < weights1.Length; i++)
             {
-                weights1[i] += Random.Range(-1f, 1f);
-                weights2[i] += Random.Range(-1f, 1f);
-                biases1[i] += Random.Range(-1f, 1f);
-                biases2[i] += Random.Range(-1f, 1f);
+                weights1[i] += Random.Range(-mutationAm, mutationAm);
+                weights2[i] += Random.Range(-mutationAm, mutationAm);
+                //biases1[i] += Random.Range(-mutationAm, mutationAm);
+                biases2[i] += Random.Range(-mutationAm, mutationAm);
             }
         }
 
@@ -87,7 +87,7 @@ public class droneNN : MonoBehaviour
 
         for (int i = 0; i < inputs.Length; i++)
         {
-            turnParameter += biases1[i] + inputs[i] * weights1[i];
+            turnParameter += inputs[i] * weights1[i];//biases1[i] + 
         }
         outputs[0] = turnParameter;
 
